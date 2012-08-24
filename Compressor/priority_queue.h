@@ -15,13 +15,13 @@ typedef struct pqueue_t {
     void **items;
     unsigned int capacity;
     unsigned int used;
-    Compare_Function compare;
+    Compare_Function a_less_b;
 } PQueue;
 
 typedef PQueue * PQueue_Ptr;
 
 PQueue_Ptr pqueue_init(Compare_Function compare);
-void pqueue_enqueue(PQueue_Ptr queue, const void *value, unsigned int priority);
+void pqueue_enqueue(PQueue_Ptr queue, void *item);
 void * pqueue_dequeue(PQueue_Ptr queue);
 void pqueue_dealloc(PQueue_Ptr queue);
 

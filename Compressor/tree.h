@@ -18,24 +18,25 @@ typedef struct tree_node_t Tree_Node;
 typedef Tree_Node * Tree_Node_Ptr;
 
 union Tree_Node_Value {
-    Tree_Node_Ptr branches[2];
-    unsigned char value;
+    unsigned char byte;
+    Tree_Node_Ptr children[2];
 };
 
 struct tree_node_t {
+    Tree_Node_Ptr root;
+    unsigned int count;
     enum Tree_Node_Type type;
-    union Tree_Node_Value node_value;
-    unsigned long long count;
-    unsigned char value;
-    struct tree_node_t *left;
-    struct tree_node_t *right;
+    union Tree_Node_Value value;
 };
 
-void Tree_Grow(Tree_Node_Ptr tree, unsigned char value);
-Tree_Node_Ptr Tree_Alloc();
-void Tree_Dealloc(Tree_Node_Ptr tree);
-void Tree_Print(Tree_Node_Ptr tree);
-int Tree_Get_Code(Tree_Node_Ptr tree, unsigned char value, unsigned int *mask);
-unsigned char Tree_Get_Value(Tree_Node_Ptr tree, unsigned int code, unsigned int mask);
+int compare_nodes(const void *a, const void *b);
+Tree_Node_Ptr tree_branch_init(Tree_Node_Ptr root);
+void tree_dealloc(Tree_Node_Ptr tree);
 
+//void tree_grow(List_Ptr node_list);
+
+//test functions
+void tree_grow(Tree_Node_Ptr tree, unsigned char value, unsigned int count);
+void tree_print(Tree_Node_Ptr tree);
+               
 #endif

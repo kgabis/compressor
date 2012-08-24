@@ -15,44 +15,45 @@ enum {
     PQStartingSize = 256
 };
 
-PQueue_Ptr pqueue_init() {
+PQueue_Ptr pqueue_init(Compare_Function compare_function) {
     PQueue_Ptr new_queue = (PQueue_Ptr)malloc(sizeof(PQueue));
-    assert(new_queue != NULL);
-    new_queue->items = (PQueue_Item*)malloc(sizeof(PQueue_Item) * PQStartingSize);
-    assert(new_queue->items != NULL);
-    new_queue->length = PQStartingSize;
+    new_queue->items = (void**)malloc(PQStartingSize * sizeof(void*));
+    new_queue->capacity = PQStartingSize;
     new_queue->used = 0;
+    new_queue->a_less_b = compare_function;
     return new_queue;
 }
 
-void pqueue_enqueue(PQueue_Ptr queue, const void *value, unsigned int priority) {
-    queue->items[queue->used].value = value;
-    queue->items[queue->used].priority = priority;
+void pqueue_enqueue(PQueue_Ptr queue, void *item) {
+    if (queue->used == queue->capacity) {
+        return;
+    }
+    queue->items[queue->used] = item;
     queue->used++;
 }
 
 void * pqueue_dequeue(PQueue_Ptr queue) {
-    PQueue_Item min;
-    min.priority = ~0u;
     if (queue->used == 1) {
-        queue->used--;
-        return (void*)queue->items[0].value;
+        queue->used = 0;
+        return queue->items[0];
     } else if (queue->used == 0) {
         return NULL;
     }
+    int min_index = 0;
+    void *min_item = queue->items[min_index];
     int i;
-    int min_i;
-    for (i = 0; i < queue->used; i++) {
-        if (queue->items[i].priority < min.priority) {
-            min = queue->items[i];
-            min_i = i;
+    for (i = min_index; i < queue->used; i++) {
+        if (queue->a_less_b(queue->items[i], min_item)) {
+            min_item = queue->items[i];
+            min_index = i;
         }
     }
-    queue->items[min_i] = queue->items[queue->used - 1];
+    queue->items[min_index] = queue->items[queue->used - 1];
     queue->used--;
-    return (void*)min.value;
+    return min_item;
 }
 
 void pqueue_dealloc(PQueue_Ptr queue) {
-    
+    free(queue->items);
+    free(queue);
 }
