@@ -48,15 +48,19 @@ void tree_dealloc(Tree_Node_Ptr tree) {
     }
 }
 
-void tree_grow(Tree_Node_Ptr tree, unsigned char value, unsigned int count) {
+void tree_grow(CDictionary_Ptr count_dictionary) {
+    
+}
+
+void tree_grow_test(Tree_Node_Ptr tree, unsigned char value, unsigned int count) {
     tree->count += count;
     if (tree->value.children[1] == NULL) {
         tree->value.children[1] = tree_leaf_init(tree, value, count);
     } else if (tree->value.children[0] == NULL) {
         tree->value.children[0] = tree_branch_init(tree);
-        tree_grow(tree->value.children[0], value, count);
+        tree_grow_test(tree->value.children[0], value, count);
     } else {
-        tree_grow(tree->value.children[0], value, count);
+        tree_grow_test(tree->value.children[0], value, count);
     }
 }
 

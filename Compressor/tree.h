@@ -9,6 +9,8 @@
 #ifndef Compressor_tree_h
 #define Compressor_tree_h
 
+#include "count_dictionary.h"
+
 enum Tree_Node_Type {
     TNTBranch,
     TNTLeaf
@@ -33,10 +35,10 @@ int compare_nodes(const void *a, const void *b);
 Tree_Node_Ptr tree_branch_init(Tree_Node_Ptr root);
 void tree_dealloc(Tree_Node_Ptr tree);
 
-//void tree_grow(List_Ptr node_list);
+void tree_grow(CDictionary_Ptr count_dictionary);
 
 //test functions
-void tree_grow(Tree_Node_Ptr tree, unsigned char value, unsigned int count);
+void tree_grow_test(Tree_Node_Ptr tree, unsigned char value, unsigned int count);
 void tree_print(Tree_Node_Ptr tree);
                
 #endif

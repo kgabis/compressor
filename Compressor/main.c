@@ -13,35 +13,21 @@
 #include "bit_operations.h"
 #include "priority_queue.h"
 #include "count_dictionary.h"
+#include "compressor.h"
 //#define BIT_SET(byte, ix, val) (byte = (byte & ~(!val << ix)) | (val << ix))
 //#define BIT_GET(byte, ix) ((byte >> ix) & 1u)
 
 
-
+//What next?
+//TODO: Converting node dictionary to balanced tree
+//TODO: Saving compressed file (bitstream? bitqueue?)
+//TODO: Decompressing file
 
 int main(int argc, const char * argv[])
 {
-    CDictionary_Ptr dict = cdict_init();
-    cdict_increment_count(dict, 1);
-    cdict_increment_count(dict, 1);
-    cdict_increment_count(dict, 2);
-    cdict_increment_count(dict, 2);
-    cdict_increment_count(dict, 3);
-    cdict_increment_count(dict, 3);
-    cdict_increment_count(dict, 3);
-    cdict_increment_count(dict, 3);
-    cdict_increment_count(dict, 1);
-    cdict_increment_count(dict, 1);
+    CDictionary_Ptr dict = count_byte_occurences("/users/kgabis/code/objc/mine/Compressor/test.pdf");
     cdict_print(dict);
     cdict_dealloc(dict);
-//    Tree_Node_Ptr tree = tree_branch_init(NULL);
-//    tree_grow(tree, 1, 10);
-//    tree_grow(tree, 2, 20);
-//    tree_grow(tree, 3, 30);
-//    tree_grow(tree, 4, 40);
-//    tree_grow(tree, 5, 50);
-//    tree_print(tree);
-//    tree_dealloc(tree);
     
     // insert code here...
     printf("Done!\n");
