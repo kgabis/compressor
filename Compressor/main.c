@@ -25,10 +25,11 @@
 
 int main(int argc, const char * argv[])
 {
-    CDictionary_Ptr dict = count_byte_occurences("/users/kgabis/code/objc/mine/Compressor/test.pdf");
-    cdict_print(dict);
-    cdict_dealloc(dict);
-    
+    CountDict_Ptr dict = count_byte_occurences("/users/kgabis/code/objc/mine/Compressor/test.pdf");
+    countdict_print(dict);
+    Tree_Ptr tree = tree_grow_from_cdict(dict);
+    tree_print(tree);
+    countdict_dealloc(dict);    
     // insert code here...
     printf("Done!\n");
     return 0;

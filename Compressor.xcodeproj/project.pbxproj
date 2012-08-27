@@ -12,6 +12,8 @@
 		EE0F3D1715E7B3EC0042FD25 /* priority_queue.c in Sources */ = {isa = PBXBuildFile; fileRef = EE0F3D1615E7B3EC0042FD25 /* priority_queue.c */; };
 		EE0F3D1C15E80BA20042FD25 /* count_dictionary.c in Sources */ = {isa = PBXBuildFile; fileRef = EE0F3D1B15E80BA20042FD25 /* count_dictionary.c */; };
 		EE0F3D1F15E813D50042FD25 /* compressor.c in Sources */ = {isa = PBXBuildFile; fileRef = EE0F3D1E15E813D50042FD25 /* compressor.c */; };
+		EE0F3D2B15EAC0640042FD25 /* bit_stream.c in Sources */ = {isa = PBXBuildFile; fileRef = EE0F3D2A15EAC0640042FD25 /* bit_stream.c */; };
+		EE0F3D2E15EBBC720042FD25 /* code_dictionary.c in Sources */ = {isa = PBXBuildFile; fileRef = EE0F3D2D15EBBC720042FD25 /* code_dictionary.c */; };
 		EE9363DB15E6D1E900EFE18F /* tree.c in Sources */ = {isa = PBXBuildFile; fileRef = EE9363DA15E6D1E900EFE18F /* tree.c */; };
 		EE9363E015E6DAED00EFE18F /* bit_operations.c in Sources */ = {isa = PBXBuildFile; fileRef = EE9363DF15E6DAED00EFE18F /* bit_operations.c */; };
 /* End PBXBuildFile section */
@@ -39,6 +41,10 @@
 		EE0F3D1B15E80BA20042FD25 /* count_dictionary.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = count_dictionary.c; sourceTree = "<group>"; };
 		EE0F3D1D15E813CC0042FD25 /* compressor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = compressor.h; sourceTree = "<group>"; };
 		EE0F3D1E15E813D50042FD25 /* compressor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = compressor.c; sourceTree = "<group>"; };
+		EE0F3D2815EAC0570042FD25 /* bit_stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bit_stream.h; sourceTree = "<group>"; };
+		EE0F3D2A15EAC0640042FD25 /* bit_stream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bit_stream.c; sourceTree = "<group>"; };
+		EE0F3D2C15EBBC6A0042FD25 /* code_dictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = code_dictionary.h; sourceTree = "<group>"; };
+		EE0F3D2D15EBBC720042FD25 /* code_dictionary.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = code_dictionary.c; sourceTree = "<group>"; };
 		EE9363DA15E6D1E900EFE18F /* tree.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tree.c; sourceTree = "<group>"; };
 		EE9363DD15E6D1FA00EFE18F /* tree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tree.h; sourceTree = "<group>"; };
 		EE9363DE15E6D38800EFE18F /* bit_operations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bit_operations.h; sourceTree = "<group>"; };
@@ -87,6 +93,10 @@
 				EE0F3D1A15E809BE0042FD25 /* count_dictionary.h */,
 				EE0F3D1D15E813CC0042FD25 /* compressor.h */,
 				EE0F3D1E15E813D50042FD25 /* compressor.c */,
+				EE0F3D2815EAC0570042FD25 /* bit_stream.h */,
+				EE0F3D2A15EAC0640042FD25 /* bit_stream.c */,
+				EE0F3D2C15EBBC6A0042FD25 /* code_dictionary.h */,
+				EE0F3D2D15EBBC720042FD25 /* code_dictionary.c */,
 			);
 			path = Compressor;
 			sourceTree = "<group>";
@@ -148,6 +158,8 @@
 				EE0F3D1715E7B3EC0042FD25 /* priority_queue.c in Sources */,
 				EE0F3D1C15E80BA20042FD25 /* count_dictionary.c in Sources */,
 				EE0F3D1F15E813D50042FD25 /* compressor.c in Sources */,
+				EE0F3D2B15EAC0640042FD25 /* bit_stream.c in Sources */,
+				EE0F3D2E15EBBC720042FD25 /* code_dictionary.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

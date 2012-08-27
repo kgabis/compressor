@@ -9,29 +9,31 @@
 #ifndef Compressor_count_dictionary_h
 #define Compressor_count_dictionary_h
 
-typedef struct cdkvpair_t {
+struct count_dict_kvpair_t {
     unsigned char key;
     unsigned long value;
-} CDKVPair;
+};
 
-typedef CDKVPair * CDKVPair_Ptr;
+typedef struct count_dict_kvpair_t CountDict_KVPair;
+typedef CountDict_KVPair * CountDict_KVPair_Ptr;
 
-typedef struct cdictionary_t {
-    CDKVPair *values;
-    unsigned int used;
+struct cdictionary_t {
+    CountDict_KVPair *items;
+    unsigned int count;
     unsigned int capacity;
-} CDictionary;
+};
 
-typedef CDictionary * CDictionary_Ptr;
+typedef struct cdictionary_t CountDict;
+typedef CountDict * CountDict_Ptr;
 
-CDictionary_Ptr cdict_init();
-void cdict_add(CDictionary_Ptr dict, unsigned char key, unsigned long value);
-void cdict_increment_count(CDictionary_Ptr dict, unsigned char key);
+CountDict_Ptr countdict_init();
+void countdict_add(CountDict_Ptr dict, unsigned char key, unsigned long value);
+void countdict_increment_count(CountDict_Ptr dict, unsigned char key);
 //returns value or 0, if there is no key
-unsigned long cdict_get(CDictionary_Ptr dict, unsigned char key);
-void cdict_dealloc(CDictionary_Ptr dict);
+unsigned long countdict_get(CountDict_Ptr dict, unsigned char key);
+void countdict_dealloc(CountDict_Ptr dict);
 //fills output with null-terminated array of keys
-void cdict_getkeys(CDictionary_Ptr dict, unsigned char * output);
-void cdict_print(CDictionary_Ptr dict);
+void countdict_get_keys(CountDict_Ptr dict, unsigned char * output);
+void countdict_print(CountDict_Ptr dict);
 
 #endif

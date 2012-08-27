@@ -9,8 +9,8 @@
 #include <stdio.h>
 #include "compressor.h"
 
-CDictionary_Ptr count_byte_occurences(const char *filename) {
-    CDictionary_Ptr cdict = cdict_init();
+CountDict_Ptr count_byte_occurences(const char *filename) {
+    CountDict_Ptr cdict = countdict_init();
     FILE *fp = fopen(filename, "rb");
     int c;
     if (fp == NULL){
@@ -19,7 +19,7 @@ CDictionary_Ptr count_byte_occurences(const char *filename) {
     }
     c = EOF;
     while((c = fgetc(fp)) != EOF) {
-        cdict_increment_count(cdict, (unsigned char)c);
+        countdict_increment_count(cdict, (unsigned char)c);
     }    
     fclose(fp);
     return cdict;

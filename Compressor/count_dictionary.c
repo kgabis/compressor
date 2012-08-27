@@ -14,71 +14,71 @@ enum {
     CDStartingSize = 256
 };
 
-CDictionary_Ptr cdict_init() {
-    CDictionary_Ptr new_dict = (CDictionary_Ptr)malloc(sizeof(CDictionary_Ptr));
-    new_dict->values = (CDKVPair*)malloc(CDStartingSize * sizeof(CDKVPair));
+CountDict_Ptr countdict_init() {
+    CountDict_Ptr new_dict = (CountDict_Ptr)malloc(sizeof(CountDict_Ptr));
+    new_dict->items = (CountDict_KVPair*)malloc(CDStartingSize * sizeof(CountDict_KVPair));
     new_dict->capacity = CDStartingSize;
-    new_dict->used = 0;
+    new_dict->count = 0;
     return new_dict;
 }
 
-void cdict_add(CDictionary_Ptr dict, unsigned char key, unsigned long value) {
+void countdict_add(CountDict_Ptr dict, unsigned char key, unsigned long value) {
     int i;
-    for (i = 0; i < dict->used; i++) {
-        if (dict->values[i].key == key) {
-            dict->values[i].value = value;
+    for (i = 0; i < dict->count; i++) {
+        if (dict->items[i].key == key) {
+            dict->items[i].value = value;
             return;
         }
     }
-    if (dict->used == dict->capacity) {
-        //TODO: realloc
-        return;
+    if (dict->count == dict->capacity) {
+        dict->capacity = dict->capacity * 2;
+        dict->items = realloc(dict->items, dict->capacity);
     }
-    dict->values[dict->used].key = key;
-    dict->values[dict->used].value = value;
-    dict->used++;
+    dict->items[dict->count].key = key;
+    dict->items[dict->count].value = value;
+    dict->count++;
 }
 
-void cdict_increment_count(CDictionary_Ptr dict, unsigned char key) {
+void countdict_increment_count(CountDict_Ptr dict, unsigned char key) {
     int i;
-    for (i = 0; i < dict->used; i++) {
-        if (dict->values[i].key == key) {
-            dict->values[i].value++;
+    for (i = 0; i < dict->count; i++) {
+        if (dict->items[i].key == key) {
+            dict->items[i].value++;
             return;
         }
     }
-    if (dict->used == dict->capacity) {
+    if (dict->count == dict->capacity) {
         //TODO: realloc
         return;
     }
-    dict->values[dict->used].key = key;
-    dict->values[dict->used].value = 1;
-    dict->used++;
+    dict->items[dict->count].key = key;
+    dict->items[dict->count].value = 1;
+    dict->count++;
 }
 
 //returns value or 0, if there is no key
-unsigned long cdict_get(CDictionary_Ptr dict, unsigned char key) {
+unsigned long countdict_get(CountDict_Ptr dict, unsigned char key) {
     int i;
-    for (i = 0; i < dict->used; i++) {
-        if (dict->values[i].key == key) {
-            return dict->values[i].value;
+    for (i = 0; i < dict->count; i++) {
+        if (dict->items[i].key == key) {
+            return dict->items[i].value;
         }
     }
     return 0;
 }
 
-void cdict_print(CDictionary_Ptr dict) {
+void countdict_print(CountDict_Ptr dict) {
     int i;
-    for (i = 0; i < dict->used; i++) {
-        printf("Key = %u, count = %lu\n", dict->values[i].key, dict->values[i].value);
+    for (i = 0; i < dict->count; i++) {
+        printf("Key = %u, count = %lu\n", dict->items[i].key, dict->items[i].value);
     }
 }
 
-void cdict_getkeys(CDictionary_Ptr dict, unsigned char * output) {
+void countdict_get_keys(CountDict_Ptr dict, unsigned char * output) {
     //TODO: implementation
 }
 
-void cdict_dealloc(CDictionary_Ptr dict) {
-    free(dict->values);
+void countdict_dealloc(CountDict_Ptr dict) {
+    free(dict->items);
     free(dict);
 }

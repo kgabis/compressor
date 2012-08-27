@@ -14,7 +14,7 @@ typedef int (*Compare_Function)(const void *a, const void *b);
 typedef struct pqueue_t {
     void **items;
     unsigned int capacity;
-    unsigned int used;
+    unsigned int count;
     Compare_Function a_less_b;
 } PQueue;
 

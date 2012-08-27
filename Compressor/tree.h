@@ -16,29 +16,30 @@ enum Tree_Node_Type {
     TNTLeaf
 };
 
-typedef struct tree_node_t Tree_Node;
-typedef Tree_Node * Tree_Node_Ptr;
+typedef struct tree_node_t Tree;
+typedef Tree * Tree_Ptr;
 
+//TODO: new name for byte
 union Tree_Node_Value {
     unsigned char byte;
-    Tree_Node_Ptr children[2];
+    Tree_Ptr children[2];
 };
 
 struct tree_node_t {
-    Tree_Node_Ptr root;
-    unsigned int count;
+    Tree_Ptr root;
+    unsigned long count;
     enum Tree_Node_Type type;
     union Tree_Node_Value value;
 };
 
-int compare_nodes(const void *a, const void *b);
-Tree_Node_Ptr tree_branch_init(Tree_Node_Ptr root);
-void tree_dealloc(Tree_Node_Ptr tree);
-
-void tree_grow(CDictionary_Ptr count_dictionary);
+Tree_Ptr tree_grow_from_cdict(CountDict_Ptr count_dictionary);
+Tree_Ptr tree_branch_init();
+Tree_Ptr tree_branch_init_with_children(Tree_Ptr left, Tree_Ptr right);
+Tree_Ptr tree_leaf_init(unsigned char byte_value, unsigned long count);
+void tree_dealloc(Tree_Ptr tree);
 
 //test functions
-void tree_grow_test(Tree_Node_Ptr tree, unsigned char value, unsigned int count);
-void tree_print(Tree_Node_Ptr tree);
+void tree_grow_test(Tree_Ptr tree, unsigned char byte, unsigned long count);
+void tree_print(Tree_Ptr tree);
                
 #endif

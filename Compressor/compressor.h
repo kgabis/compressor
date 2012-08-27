@@ -11,6 +11,6 @@
 
 #include "count_dictionary.h"
 
-CDictionary_Ptr count_byte_occurences(const char *filename);
+CountDict_Ptr count_byte_occurences(const char *filename);
 
 #endif
