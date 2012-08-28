@@ -7,4 +7,47 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "code_dictionary.h"
+#include "bit_operations.h"
+
+CodeDict_Ptr codedict_init() {
+    CodeDict_Ptr new_dict = (CodeDict_Ptr)malloc(sizeof(CodeDict));
+    for (int i = 0; i < CPSMaxLeafVal; i++) {
+        new_dict->items[i].set = 0;
+    }
+    return new_dict;
+}
+
+void codedict_add(CodeDict_Ptr dict, int key, unsigned int code, unsigned int mask) {
+    dict->items[key].code = code;
+    dict->items[key].mask = mask;
+    dict->items[key].set = 1;
+}
+
+CodeDict_Value codedict_get(CodeDict_Ptr dict, int key) {
+    return dict->items[key];
+}
+
+void codedict_dealloc(CodeDict_Ptr dict) {
+    free(dict);
+}
+
+void codedict_print(CodeDict_Ptr dict, char print_chars) {
+    int i;
+    int bit_count = 0;
+    
+    for (i = 0; i < CPSMaxLeafVal; i++) {
+        if (dict->items[i].set) {
+            if (print_chars) {
+                printf("Key = %c, code = ", i);
+            } else {
+                printf("Key = %u, code = ", i);
+            }
+            bit_count += bits_count_ones(dict->items[i].mask);
+            bits_print(dict->items[i].code, dict->items[i].mask);
+            printf("\n");
+        }
+    }
+    printf("Average bits per byte: %f\n", (float)bit_count/256.0f);
+}

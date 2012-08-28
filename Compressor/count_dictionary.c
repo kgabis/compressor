@@ -10,19 +10,21 @@
 #include <stdlib.h>
 #include "count_dictionary.h"
 
+#include "compressor.h"
+
 enum {
-    CDStartingSize = 256
+    CDStartingSize = CPSMaxLeafVal
 };
 
 CountDict_Ptr countdict_init() {
     CountDict_Ptr new_dict = (CountDict_Ptr)malloc(sizeof(CountDict_Ptr));
     new_dict->items = (CountDict_KVPair*)malloc(CDStartingSize * sizeof(CountDict_KVPair));
-    new_dict->capacity = CDStartingSize;
+    new_dict->_capacity = CDStartingSize;
     new_dict->count = 0;
     return new_dict;
 }
 
-void countdict_add(CountDict_Ptr dict, unsigned char key, unsigned long value) {
+void countdict_add(CountDict_Ptr dict, int key, unsigned long value) {
     int i;
     for (i = 0; i < dict->count; i++) {
         if (dict->items[i].key == key) {
@@ -30,16 +32,16 @@ void countdict_add(CountDict_Ptr dict, unsigned char key, unsigned long value) {
             return;
         }
     }
-    if (dict->count == dict->capacity) {
-        dict->capacity = dict->capacity * 2;
-        dict->items = realloc(dict->items, dict->capacity);
+    if (dict->count == dict->_capacity) {
+        dict->_capacity = dict->_capacity * 2;
+        dict->items = realloc(dict->items, dict->_capacity);
     }
     dict->items[dict->count].key = key;
     dict->items[dict->count].value = value;
     dict->count++;
 }
 
-void countdict_increment_count(CountDict_Ptr dict, unsigned char key) {
+void countdict_increment_count(CountDict_Ptr dict, int key) {
     int i;
     for (i = 0; i < dict->count; i++) {
         if (dict->items[i].key == key) {
@@ -47,7 +49,7 @@ void countdict_increment_count(CountDict_Ptr dict, unsigned char key) {
             return;
         }
     }
-    if (dict->count == dict->capacity) {
+    if (dict->count == dict->_capacity) {
         //TODO: realloc
         return;
     }
@@ -57,7 +59,7 @@ void countdict_increment_count(CountDict_Ptr dict, unsigned char key) {
 }
 
 //returns value or 0, if there is no key
-unsigned long countdict_get(CountDict_Ptr dict, unsigned char key) {
+unsigned long countdict_get(CountDict_Ptr dict, int key) {
     int i;
     for (i = 0; i < dict->count; i++) {
         if (dict->items[i].key == key) {

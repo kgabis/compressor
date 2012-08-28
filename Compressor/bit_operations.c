@@ -22,15 +22,26 @@ void bits_print_uint(unsigned int num) {
     printf("\n");
 }
 
-void bits_print(unsigned int num, unsigned int mask) {
-    //bits_print_uint(mask);
-    while (BIT_GET(mask, 0)) {
-        if (BIT_GET(num, 0)) {
-            printf("1");
-        } else {
-            printf("0");
+void bits_print(int num, int mask) {
+    int i;
+    for (i = (sizeof(int) * 8) - 1; i >= 0 ; i--) {
+        if(BIT_GET(mask, i)) {
+            if (BIT_GET(num, i)) {
+                printf("1");
+            } else {
+                printf("0");
+            }
         }
-        mask = mask >> 1;
     }
-    printf("\n");
+}
+
+unsigned int bits_count_ones(unsigned long num) {
+    int count = 0;
+    int i;
+    for (i = 0; i < sizeof(unsigned long); i++) {
+        if (BIT_GET(num, i)) {
+            count++;
+        }
+    }
+    return count;
 }

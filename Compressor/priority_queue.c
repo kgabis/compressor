@@ -10,34 +10,32 @@
 #include <stdlib.h>
 #include "priority_queue.h"
 #include "assert.h"
+#include "compressor.h"
 
 enum {
-    PQStartingSize = 256
+    PQStartingSize = CPSMaxLeafVal
 };
 
 PQueue_Ptr pqueue_init(Compare_Function compare_function) {
     PQueue_Ptr new_queue = (PQueue_Ptr)malloc(sizeof(PQueue));
     new_queue->items = (void**)malloc(PQStartingSize * sizeof(void*));
-    new_queue->capacity = PQStartingSize;
+    new_queue->_capacity = PQStartingSize;
     new_queue->count = 0;
     new_queue->a_less_b = compare_function;
     return new_queue;
 }
 
 void pqueue_enqueue(PQueue_Ptr queue, void *item) {
-    if (queue->count == queue->capacity) {
-        queue->capacity = queue->capacity * 2;
-        queue->items = realloc(queue->items, queue->capacity);
+    if (queue->count == queue->_capacity) {
+        queue->_capacity = queue->_capacity * 2;
+        queue->items = realloc(queue->items, queue->_capacity);
     }
     queue->items[queue->count] = item;
     queue->count++;
 }
 
 void * pqueue_dequeue(PQueue_Ptr queue) {
-    if (queue->count == 1) {
-        queue->count = 0;
-        return queue->items[0];
-    } else if (queue->count == 0) {
+    if (queue->count == 0) {
         return NULL;
     }
     int min_index = 0;

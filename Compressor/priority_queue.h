@@ -11,13 +11,14 @@
 
 typedef int (*Compare_Function)(const void *a, const void *b);
 
-typedef struct pqueue_t {
+struct pqueue_t {
     void **items;
-    unsigned int capacity;
+    unsigned int _capacity;
     unsigned int count;
     Compare_Function a_less_b;
-} PQueue;
+};
 
+typedef struct pqueue_t PQueue;
 typedef PQueue * PQueue_Ptr;
 
 PQueue_Ptr pqueue_init(Compare_Function compare);

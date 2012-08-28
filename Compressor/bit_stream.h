@@ -11,17 +11,18 @@
 
 #include <stdio.h>
 
-typedef struct bs_fp_t {
-    FILE fp;
+typedef struct bs_file_t {
+    FILE *fp;
     unsigned char byte_buffer;
     unsigned char buffer_index;
 } BS_File;
 
 typedef BS_File * BS_File_Ptr;
 
-BS_File_Ptr bs_open_file(const char *filename);
+BS_File_Ptr bs_open_stream(FILE *file);
 int bs_get_bits(BS_File_Ptr file, unsigned int count);
 void bs_put_bits(BS_File_Ptr file, unsigned int bits, unsigned int count);
-void bs_close_file(BS_File_Ptr file);
+void bs_close_stream(BS_File_Ptr file);
+void bs_test();
 
 #endif

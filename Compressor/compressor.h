@@ -11,6 +11,11 @@
 
 #include "count_dictionary.h"
 
+enum  {
+    CPSMaxLeafVal = 300,
+    CPSEndOfBlock = 256
+};
+
 CountDict_Ptr count_byte_occurences(const char *filename);
 
 #endif

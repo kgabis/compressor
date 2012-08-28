@@ -20,7 +20,8 @@ CountDict_Ptr count_byte_occurences(const char *filename) {
     c = EOF;
     while((c = fgetc(fp)) != EOF) {
         countdict_increment_count(cdict, (unsigned char)c);
-    }    
+    }
+    countdict_increment_count(cdict, CPSEndOfBlock);
     fclose(fp);
     return cdict;
 }

@@ -10,30 +10,26 @@
 #define Compressor_count_dictionary_h
 
 struct count_dict_kvpair_t {
-    unsigned char key;
+    int key;
     unsigned long value;
 };
 
 typedef struct count_dict_kvpair_t CountDict_KVPair;
-typedef CountDict_KVPair * CountDict_KVPair_Ptr;
 
-struct cdictionary_t {
+struct countdict_t {
     CountDict_KVPair *items;
     unsigned int count;
-    unsigned int capacity;
+    unsigned int _capacity;
 };
 
-typedef struct cdictionary_t CountDict;
+typedef struct countdict_t CountDict;
 typedef CountDict * CountDict_Ptr;
 
 CountDict_Ptr countdict_init();
-void countdict_add(CountDict_Ptr dict, unsigned char key, unsigned long value);
-void countdict_increment_count(CountDict_Ptr dict, unsigned char key);
-//returns value or 0, if there is no key
-unsigned long countdict_get(CountDict_Ptr dict, unsigned char key);
+void countdict_add(CountDict_Ptr dict, int key, unsigned long value);
+void countdict_increment_count(CountDict_Ptr dict, int key);
+unsigned long countdict_get(CountDict_Ptr dict, int key);
 void countdict_dealloc(CountDict_Ptr dict);
-//fills output with null-terminated array of keys
-void countdict_get_keys(CountDict_Ptr dict, unsigned char * output);
 void countdict_print(CountDict_Ptr dict);
 
 #endif

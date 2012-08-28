@@ -14,6 +14,8 @@
 #define BIT_FLIP(a,b) ((a) ^= (1<<(b)))
 #define BIT_GET(a,b) ((a) & (1<<(b)))
 
-void bits_print(unsigned int num, unsigned int mask);
+void bits_print_uint(unsigned int num);
+void bits_print(int num, int mask);
+unsigned int bits_count_ones(unsigned long num);
 
 #endif
