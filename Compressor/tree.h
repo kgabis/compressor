@@ -11,6 +11,7 @@
 
 #include "count_dictionary.h"
 #include "code_dictionary.h"
+#include "bit_stream.h"
 
 enum Tree_Node_Type {
     TNTBranch,
@@ -38,7 +39,7 @@ Tree_Ptr tree_branch_init();
 Tree_Ptr tree_branch_init_with_children(Tree_Ptr left, Tree_Ptr right);
 Tree_Ptr tree_leaf_init(int leaf_value, unsigned long count);
 CodeDict_Ptr tree_get_codedict(Tree_Ptr tree);
-
+int tree_walk(Tree_Ptr tree, Bit_Stream_Ptr stream);
 void tree_dealloc(Tree_Ptr tree);
 
 //test functions

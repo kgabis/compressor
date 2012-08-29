@@ -126,17 +126,12 @@ CodeDict_Ptr tree_get_codedict(Tree_Ptr tree) {
     return codedict;
 }
 
-//void tree_grow_test(Tree_Ptr tree, unsigned char leaf_value, unsigned long count) {
-//    tree->count += count;
-//    if (tree->value.children[1] == NULL) {
-//        tree->value.children[1] = tree_leaf_init(leaf_value, count);
-//    } else if (tree->value.children[0] == NULL) {
-//        tree->value.children[0] = tree_branch_init();
-//        tree_grow_test(tree->value.children[0], leaf_value, count);
-//    } else {
-//        tree_grow_test(tree->value.children[0], leaf_value, count);
-//    }
-//}
+int tree_walk(Tree_Ptr tree, Bit_Stream_Ptr stream) {
+    if (tree->type == TNTLeaf) {
+        return tree->value.leaf_value;
+    }
+    return tree_walk(tree->value.children[bs_get_bit(stream)], stream);
+}
 
 void tree_print(Tree_Ptr tree) {
     if (tree == NULL) {

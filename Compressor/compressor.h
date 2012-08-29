@@ -11,11 +11,18 @@
 
 #include "count_dictionary.h"
 
-enum  {
+enum {
     CPSMaxLeafVal = 300,
     CPSEndOfBlock = 256
 };
 
-CountDict_Ptr count_byte_occurences(const char *filename);
+enum CompressorResult {
+    CPSRSuccess = 1,
+    CPSRFail = 0
+};
+
+void compressor_test();
+enum CompressorResult compressor_compress(const char *filename);
+CountDict_Ptr count_byte_occurences_in_file(FILE *fp);
 
 #endif

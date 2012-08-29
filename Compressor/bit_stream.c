@@ -48,7 +48,7 @@ Bit_Stream_Ptr bs_open_stream(FILE *file, enum BitStreamType type) {
 int bs_get_bit(Bit_Stream_Ptr stream) {
     if (stream->bit_offset == 8) {
         int c;
-        c = fgetc(stream->fp);
+        c = getc(stream->fp);
         if (c == EOF) {
             return EOF;
         }
@@ -60,18 +60,18 @@ int bs_get_bit(Bit_Stream_Ptr stream) {
     return output;
 }
 
-int bs_get_bits(Bit_Stream_Ptr stream, unsigned int count) {
+int bs_get_bits(Bit_Stream_Ptr stream, unsigned int length) {
     int output = 0;
     int i;
     int c;
-    for (i = 0; i < count; i++) {
+    for (i = 0; i < length; i++) {
         c = bs_get_bit(stream);
         if (c == EOF) {
             output = EOF;
         } else if (c) {
-            BIT_SET(output, count - i - 1);
+            BIT_SET(output, length - i - 1);
         } else {
-            BIT_CLEAR(output, count - i - 1);
+            BIT_CLEAR(output, length - i - 1);
         }
     }
     return output;
@@ -92,10 +92,10 @@ void bs_put_bit(Bit_Stream_Ptr stream, int value) {
     }
 }
 
-void bs_put_bits(Bit_Stream_Ptr stream, unsigned int bits, unsigned int count) {
+void bs_put_bits(Bit_Stream_Ptr stream, unsigned int bits, unsigned int length) {
     int i;
-    for (i = 0; i < count; i++) {
-        bs_put_bit(stream, BIT_GET(bits, count - i - 1));
+    for (i = 0; i < length; i++) {
+        bs_put_bit(stream, BIT_GET(bits, length - i - 1));
     }
 }
 

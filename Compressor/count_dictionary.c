@@ -72,9 +72,11 @@ unsigned long countdict_get(CountDict_Ptr dict, int key) {
 
 void countdict_print(CountDict_Ptr dict) {
     int i;
+    int *keys = countdict_get_keys(dict);
     for (i = 0; i < dict->count; i++) {
-        printf("Key = %u, count = %lu\n", dict->items[i].key, dict->items[i].value);
+        printf("Key = %u, count = %lu\n", keys[i], countdict_get(dict, keys[i]));
     }
+    free(keys);
 }
 
 void countdict_dealloc(CountDict_Ptr dict) {

@@ -31,8 +31,8 @@ typedef struct bit_stream_t {
 typedef Bit_Stream * Bit_Stream_Ptr;
 
 Bit_Stream_Ptr bs_open_stream(FILE *file, enum BitStreamType type);
-int bs_get_bits(Bit_Stream_Ptr stream, unsigned int count);
-void bs_put_bits(Bit_Stream_Ptr stream, unsigned int bits, unsigned int count);
+int bs_get_bits(Bit_Stream_Ptr stream, unsigned int length);
+void bs_put_bits(Bit_Stream_Ptr stream, unsigned int bits, unsigned int length);
 void bs_put_bit(Bit_Stream_Ptr stream, int value);
 int bs_get_bit(Bit_Stream_Ptr stream);
 

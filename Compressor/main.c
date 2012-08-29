@@ -28,17 +28,8 @@
 
 int main(int argc, const char * argv[])
 {
-//    bits_print(0xf0, 0xff);
-//    printf("\n");
-//    printf("%d\n", bits_count_ones(0xf0));
-    bs_test();
-//    CountDict_Ptr countdict = count_byte_occurences("/users/kgabis/code/objc/mine/Compressor/test.pdf");
-//    Tree_Ptr tree = tree_grow_from_countdict(countdict);
-//    CodeDict_Ptr codedict = tree_get_codedict(tree);
-//    codedict_print(codedict, 0);
-//    tree_dealloc(tree);
-//    countdict_dealloc(countdict);
-
+    compressor_test();
+//    bs_test();
     printf("Done!\n");
     return 0;
 }
