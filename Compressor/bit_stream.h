@@ -16,21 +16,27 @@ enum BitStreamType {
     BSTWrite = 2
 };
 
-typedef struct bs_file_t {
+enum BitStreamStatus {
+    BSSClosed = 1,
+    BSSOpen = 2
+};
+
+typedef struct bit_stream_t {
     FILE *fp;
     unsigned char buffer;
     unsigned char bit_offset;
-} BS_File;
+    enum BitStreamStatus status;
+} Bit_Stream;
 
-typedef BS_File * BS_File_Ptr;
+typedef Bit_Stream * Bit_Stream_Ptr;
 
-BS_File_Ptr bs_open_stream(FILE *file, enum BitStreamType type);
-int bs_get_bits(BS_File_Ptr file, unsigned int count);
-void bs_put_bits(BS_File_Ptr file, unsigned int bits, unsigned int count);
-void bs_put_bit(BS_File_Ptr file, int value);
-int bs_get_bit(BS_File_Ptr file);
+Bit_Stream_Ptr bs_open_stream(FILE *file, enum BitStreamType type);
+int bs_get_bits(Bit_Stream_Ptr stream, unsigned int count);
+void bs_put_bits(Bit_Stream_Ptr stream, unsigned int bits, unsigned int count);
+void bs_put_bit(Bit_Stream_Ptr stream, int value);
+int bs_get_bit(Bit_Stream_Ptr stream);
 
-void bs_close_stream(BS_File_Ptr file);
+void bs_close_stream(Bit_Stream_Ptr stream);
 void bs_test();
 
 #endif

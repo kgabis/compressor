@@ -18,53 +18,54 @@ void bs_test() {
     if (fp == NULL){
        puts("Error: Wrong filename.");
     }
-    BS_File_Ptr bs_file = bs_open_stream(fp, BSTWrite);
-    bs_put_bits(bs_file, 0x4, 4);
-    bs_put_bits(bs_file, 0x1, 2);
-    bs_close_stream(bs_file);
+    Bit_Stream_Ptr bit_stream = bs_open_stream(fp, BSTWrite);
+    bs_put_bits(bit_stream, 0x4, 4);
+    bs_put_bits(bit_stream, 0x1, 2);
+    bs_close_stream(bit_stream);
     fclose(fp);
     fp = fopen(filename, "rb");
-    bs_file = bs_open_stream(fp, BSTRead);
+    bit_stream = bs_open_stream(fp, BSTRead);
     int c;
-    while ((c = bs_get_bits(bs_file, 2)) != EOF) {
+    while ((c = bs_get_bits(bit_stream, 2)) != EOF) {
         bits_print(c, 2);
         printf("\n");
     }    
     fclose(fp);
 }
 
-BS_File_Ptr bs_open_stream(FILE *file, enum BitStreamType type) {
-    BS_File_Ptr new_bsfile = (BS_File_Ptr)malloc(sizeof(BS_File));
-    new_bsfile->fp = file;
+Bit_Stream_Ptr bs_open_stream(FILE *file, enum BitStreamType type) {
+    Bit_Stream_Ptr new_stream = (Bit_Stream_Ptr)malloc(sizeof(Bit_Stream));
+    new_stream->fp = file;
     if (type == BSTRead) {
-        new_bsfile->bit_offset = 8;
+        new_stream->bit_offset = 8;
     } else {
-        new_bsfile->bit_offset = 0;
+        new_stream->bit_offset = 0;
     }
-    return new_bsfile;
+    new_stream->status = BSSOpen;
+    return new_stream;
 }
 
-int bs_get_bit(BS_File_Ptr file) {
-    if (file->bit_offset == 8) {
+int bs_get_bit(Bit_Stream_Ptr stream) {
+    if (stream->bit_offset == 8) {
         int c;
-        c = fgetc(file->fp);
+        c = fgetc(stream->fp);
         if (c == EOF) {
             return EOF;
         }
-        file->buffer = c;
-        file->bit_offset = 0;
+        stream->buffer = c;
+        stream->bit_offset = 0;
     }
-    int output = BIT_GET(file->buffer, 7 - file->bit_offset);
-    file->bit_offset++;
+    int output = BIT_GET(stream->buffer, 7 - stream->bit_offset);
+    stream->bit_offset++;
     return output;
 }
 
-int bs_get_bits(BS_File_Ptr file, unsigned int count) {
+int bs_get_bits(Bit_Stream_Ptr stream, unsigned int count) {
     int output = 0;
     int i;
     int c;
     for (i = 0; i < count; i++) {
-        c = bs_get_bit(file);
+        c = bs_get_bit(stream);
         if (c == EOF) {
             output = EOF;
         } else if (c) {
@@ -76,30 +77,31 @@ int bs_get_bits(BS_File_Ptr file, unsigned int count) {
     return output;
 }
 
-void bs_put_bit(BS_File_Ptr file, int value) {
+void bs_put_bit(Bit_Stream_Ptr stream, int value) {
     unsigned char val = !!value;
     if (val) {
-        BIT_SET(file->buffer, 7 - file->bit_offset);
+        BIT_SET(stream->buffer, 7 - stream->bit_offset);
     } else {
-        BIT_CLEAR(file->buffer, 7 - file->bit_offset);
+        BIT_CLEAR(stream->buffer, 7 - stream->bit_offset);
     }
-    file->bit_offset++;
-    if (file->bit_offset > 7) {
-        fputc(file->buffer, file->fp);
-        file->buffer = 0;
-        file->bit_offset = 0;
+    stream->bit_offset++;
+    if (stream->bit_offset > 7) {
+        fputc(stream->buffer, stream->fp);
+        stream->buffer = 0;
+        stream->bit_offset = 0;
     }
 }
 
-void bs_put_bits(BS_File_Ptr file, unsigned int bits, unsigned int count) {
+void bs_put_bits(Bit_Stream_Ptr stream, unsigned int bits, unsigned int count) {
     int i;
     for (i = 0; i < count; i++) {
-        bs_put_bit(file, BIT_GET(bits, count - i - 1));
+        bs_put_bit(stream, BIT_GET(bits, count - i - 1));
     }
 }
 
-void bs_close_stream(BS_File_Ptr file) {
-    while (file->bit_offset != 0) {
-        bs_put_bit(file, 0);
+void bs_close_stream(Bit_Stream_Ptr stream) {
+    while (stream->bit_offset != 0) {
+        bs_put_bit(stream, 0);
     }
+    stream->status = BSSClosed;
 }
