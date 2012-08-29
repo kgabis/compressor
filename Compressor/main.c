@@ -9,12 +9,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 #include "tree.h"
 #include "bit_operations.h"
 #include "priority_queue.h"
 #include "count_dictionary.h"
 #include "compressor.h"
 #include "bit_stream.h"
+
+
 //#define BIT_SET(byte, ix, val) (byte = (byte & ~(!val << ix)) | (val << ix))
 //#define BIT_GET(byte, ix) ((byte >> ix) & 1u)
 

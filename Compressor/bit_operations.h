@@ -15,7 +15,7 @@
 #define BIT_GET(a,b) ((a) & (1<<(b)))
 
 void bits_print_uint(unsigned int num);
-void bits_print(int num, int mask);
+void bits_print(int num, int length);
 unsigned int bits_count_ones(unsigned long num);
 
 #endif

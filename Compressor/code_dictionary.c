@@ -19,9 +19,9 @@ CodeDict_Ptr codedict_init() {
     return new_dict;
 }
 
-void codedict_add(CodeDict_Ptr dict, int key, unsigned int code, unsigned int mask) {
+void codedict_add(CodeDict_Ptr dict, int key, unsigned int code, unsigned int length) {
     dict->items[key].code = code;
-    dict->items[key].mask = mask;
+    dict->items[key].length = length;
     dict->items[key].set = 1;
 }
 
@@ -40,12 +40,12 @@ void codedict_print(CodeDict_Ptr dict, char print_chars) {
     for (i = 0; i < CPSMaxLeafVal; i++) {
         if (dict->items[i].set) {
             if (print_chars) {
-                printf("Key = %c, code = ", i);
+                printf("Key = %3c, code = ", i);
             } else {
-                printf("Key = %u, code = ", i);
+                printf("Key = %3u, code = ", i);
             }
-            bit_count += bits_count_ones(dict->items[i].mask);
-            bits_print(dict->items[i].code, dict->items[i].mask);
+            bit_count += dict->items[i].length;
+            bits_print(dict->items[i].code, dict->items[i].length);
             printf("\n");
         }
     }

@@ -10,6 +10,7 @@
 #define Compressor_count_dictionary_h
 
 struct count_dict_kvpair_t {
+    unsigned char is_set;
     int key;
     unsigned long value;
 };
@@ -29,6 +30,7 @@ CountDict_Ptr countdict_init();
 void countdict_add(CountDict_Ptr dict, int key, unsigned long value);
 void countdict_increment_count(CountDict_Ptr dict, int key);
 unsigned long countdict_get(CountDict_Ptr dict, int key);
+int * countdict_get_keys(CountDict_Ptr dict);
 void countdict_dealloc(CountDict_Ptr dict);
 void countdict_print(CountDict_Ptr dict);
 

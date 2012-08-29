@@ -26,7 +26,7 @@ PQueue_Ptr pqueue_init(Compare_Function compare_function) {
 }
 
 void pqueue_enqueue(PQueue_Ptr queue, void *item) {
-    if (queue->count == queue->_capacity) {
+    if (queue->count >= queue->_capacity) {
         queue->_capacity = queue->_capacity * 2;
         queue->items = realloc(queue->items, queue->_capacity);
     }

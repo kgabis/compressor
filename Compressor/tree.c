@@ -83,11 +83,15 @@ Tree_Ptr tree_grow_from_countdict(CountDict_Ptr count_dictionary) {
     PQueue_Ptr pqueue = pqueue_init(compare_nodes);
     Tree_Ptr new_node;
     Tree_Ptr result;
+    int *dictionary_keys = countdict_get_keys(count_dictionary);
     int i;
+    unsigned long count;
     for (i = 0; i < count_dictionary->count; i++) {
-        new_node = get_node_from_dict_entry(count_dictionary->items[i]);
+        count = countdict_get(count_dictionary, dictionary_keys[i]);
+        new_node = tree_leaf_init(dictionary_keys[i], count);
         pqueue_enqueue(pqueue, new_node);
     }
+    free(dictionary_keys);
     while (pqueue->count > 1) {
         Tree_Ptr left = pqueue_dequeue(pqueue);
         Tree_Ptr right = pqueue_dequeue(pqueue);
@@ -102,17 +106,17 @@ Tree_Ptr tree_grow_from_countdict(CountDict_Ptr count_dictionary) {
 static void add_leaves_to_codedict(Tree_Ptr tree,
                                    CodeDict_Ptr codedict,
                                    unsigned int code,
-                                   unsigned int mask) {
+                                   unsigned int length) {
     if (tree == NULL) {
         return;
     } else if (tree->type == TNTLeaf) {
-        codedict_add(codedict, tree->value.leaf_value, code, mask);
+        codedict_add(codedict, tree->value.leaf_value, code, length);
     } else {
         code = code << 1;
         BIT_CLEAR(code, 0);
-        add_leaves_to_codedict(tree->value.children[0], codedict, code, (mask << 1) | 1);
+        add_leaves_to_codedict(tree->value.children[0], codedict, code, length + 1);
         BIT_SET(code, 0);
-        add_leaves_to_codedict(tree->value.children[1], codedict, code, (mask << 1) | 1);
+        add_leaves_to_codedict(tree->value.children[1], codedict, code, length + 1);
     }    
 }
 

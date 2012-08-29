@@ -22,15 +22,13 @@ void bits_print_uint(unsigned int num) {
     printf("\n");
 }
 
-void bits_print(int num, int mask) {
+void bits_print(int num, int length) {
     int i;
-    for (i = (sizeof(int) * 8) - 1; i >= 0 ; i--) {
-        if(BIT_GET(mask, i)) {
-            if (BIT_GET(num, i)) {
-                printf("1");
-            } else {
-                printf("0");
-            }
+    for (i = 0; i < length; i++) {
+        if (BIT_GET(num, length - 1 - i)) {
+            printf("1");
+        } else {
+            printf("0");
         }
     }
 }

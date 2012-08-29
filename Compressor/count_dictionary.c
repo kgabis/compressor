@@ -19,46 +19,47 @@ enum {
 CountDict_Ptr countdict_init() {
     CountDict_Ptr new_dict = (CountDict_Ptr)malloc(sizeof(CountDict_Ptr));
     new_dict->items = (CountDict_KVPair*)malloc(CDStartingSize * sizeof(CountDict_KVPair));
+    for (int i = 0; i < CDStartingSize; i++) {
+        new_dict->items[i].is_set = 0;
+        new_dict->items[i].key = i;
+        new_dict->items[i].value = 0;
+    }
     new_dict->_capacity = CDStartingSize;
     new_dict->count = 0;
     return new_dict;
 }
 
 void countdict_add(CountDict_Ptr dict, int key, unsigned long value) {
-    int i;
-    for (i = 0; i < dict->count; i++) {
-        if (dict->items[i].key == key) {
-            dict->items[i].value = value;
-            return;
-        }
+    int truncated_key = key%dict->_capacity;
+    if (dict->items[truncated_key].is_set == 0) {
+        dict->count++;
     }
-    if (dict->count == dict->_capacity) {
-        dict->_capacity = dict->_capacity * 2;
-        dict->items = realloc(dict->items, dict->_capacity);
-    }
-    dict->items[dict->count].key = key;
-    dict->items[dict->count].value = value;
-    dict->count++;
+    dict->items[truncated_key].is_set = 1;
+    dict->items[truncated_key].value = value;
 }
 
 void countdict_increment_count(CountDict_Ptr dict, int key) {
-    int i;
-    for (i = 0; i < dict->count; i++) {
-        if (dict->items[i].key == key) {
-            dict->items[i].value++;
-            return;
-        }
+    int truncated_key = key%dict->_capacity;
+    if (dict->items[truncated_key].is_set == 0) {
+        dict->count++;
     }
-    if (dict->count == dict->_capacity) {
-        //TODO: realloc
-        return;
-    }
-    dict->items[dict->count].key = key;
-    dict->items[dict->count].value = 1;
-    dict->count++;
+    dict->items[truncated_key].is_set = 1;
+    dict->items[truncated_key].value++;
 }
 
-//returns value or 0, if there is no key
+int * countdict_get_keys(CountDict_Ptr dict) {
+    int i;
+    int result_index = 0;
+    int * result = (int*)malloc(sizeof(int) * dict->count);
+    for (i = 0 ; i < dict->_capacity; i++) {
+        if (dict->items[i].is_set) {
+            result[result_index] = dict->items[i].key;
+            result_index++;
+        }
+    }
+    return result;
+}
+
 unsigned long countdict_get(CountDict_Ptr dict, int key) {
     int i;
     for (i = 0; i < dict->count; i++) {
@@ -74,10 +75,6 @@ void countdict_print(CountDict_Ptr dict) {
     for (i = 0; i < dict->count; i++) {
         printf("Key = %u, count = %lu\n", dict->items[i].key, dict->items[i].value);
     }
-}
-
-void countdict_get_keys(CountDict_Ptr dict, unsigned char * output) {
-    //TODO: implementation
 }
 
 void countdict_dealloc(CountDict_Ptr dict) {
