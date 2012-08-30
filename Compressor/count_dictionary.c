@@ -12,25 +12,20 @@
 
 #include "compressor.h"
 
-enum {
-    CDStartingSize = CPSMaxLeafVal
-};
-
 CountDict_Ptr countdict_init() {
-    CountDict_Ptr new_dict = (CountDict_Ptr)malloc(sizeof(CountDict_Ptr));
-    new_dict->items = (CountDict_KVPair*)malloc(CDStartingSize * sizeof(CountDict_KVPair));
-    for (int i = 0; i < CDStartingSize; i++) {
+    CountDict_Ptr new_dict = (CountDict_Ptr)malloc(sizeof(CountDict));
+    for (int i = 0; i < CPSMaxLeafVal; i++) {
         new_dict->items[i].is_set = 0;
         new_dict->items[i].key = i;
         new_dict->items[i].value = 0;
     }
-    new_dict->_capacity = CDStartingSize;
+    new_dict->capacity = CPSMaxLeafVal;
     new_dict->count = 0;
     return new_dict;
 }
 
 void countdict_add(CountDict_Ptr dict, int key, unsigned long value) {
-    int truncated_key = key % dict->_capacity;
+    int truncated_key = key % dict->capacity;
     if (dict->items[truncated_key].is_set == 0) {
         dict->count++;
     }
@@ -39,7 +34,7 @@ void countdict_add(CountDict_Ptr dict, int key, unsigned long value) {
 }
 
 void countdict_increment_count(CountDict_Ptr dict, int key) {
-    int truncated_key = key % dict->_capacity;
+    int truncated_key = key % dict->capacity;
     if (dict->items[truncated_key].is_set == 0) {
         dict->count++;
     }
@@ -50,8 +45,8 @@ void countdict_increment_count(CountDict_Ptr dict, int key) {
 int * countdict_get_keys(CountDict_Ptr dict) {
     int i;
     int result_index = 0;
-    int * result = (int*)malloc(sizeof(int) * dict->count);
-    for (i = 0 ; i < dict->_capacity; i++) {
+    int *result = (int*)malloc(sizeof(int) * dict->count);
+    for (i = 0 ; i < dict->capacity; i++) {
         if (dict->items[i].is_set) {
             result[result_index] = dict->items[i].key;
             result_index++;
@@ -61,7 +56,7 @@ int * countdict_get_keys(CountDict_Ptr dict) {
 }
 
 unsigned long countdict_get(CountDict_Ptr dict, int key) {
-    int truncated_key = key % dict->_capacity;
+    int truncated_key = key % dict->capacity;
     if (dict->items[truncated_key].is_set) {
         return dict->items[truncated_key].value;
     } else {
@@ -79,6 +74,5 @@ void countdict_print(CountDict_Ptr dict) {
 }
 
 void countdict_dealloc(CountDict_Ptr dict) {
-    free(dict->items);
     free(dict);
 }

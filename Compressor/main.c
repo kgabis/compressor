@@ -26,10 +26,24 @@
 //TODO: Saving compressed file (bitstream? bitqueue?)
 //TODO: Decompressing file
 
+struct person_t {
+    char first_name[256];
+    char last_name[256];
+};
+
 int main(int argc, const char * argv[])
 {
     compressor_test();
 //    bs_test();
+//    struct person_t person = { "Krzysztof", "Gabis"};
+//    struct person_t person_read;
+//    FILE *fp = fopen("/users/kgabis/code/objc/mine/Compressor/test_person.txt", "wb");
+//    fwrite(&person, 1, sizeof(struct person_t), fp);
+//    fclose(fp);
+//    fp = fopen("/users/kgabis/code/objc/mine/Compressor/test_person.txt", "rb");
+//    fread(&person_read, 1, sizeof(struct person_t), fp);
+//    printf("%s %s", person_read.first_name, person_read.last_name);
+//    fclose(fp);
     printf("\nDone!\n");
     return 0;
 }

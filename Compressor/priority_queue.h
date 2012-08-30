@@ -13,7 +13,7 @@ typedef int (*Compare_Function)(const void *a, const void *b);
 
 struct pqueue_t {
     void **items;
-    unsigned int _capacity;
+    unsigned int capacity;
     unsigned int count;
     Compare_Function a_less_b;
 };

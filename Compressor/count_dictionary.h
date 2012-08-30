@@ -18,9 +18,9 @@ struct count_dict_kvpair_t {
 typedef struct count_dict_kvpair_t CountDict_KVPair;
 
 struct countdict_t {
-    CountDict_KVPair *items;
+    CountDict_KVPair items[300];
     unsigned int count;
-    unsigned int _capacity;
+    unsigned int capacity;
 };
 
 typedef struct countdict_t CountDict;

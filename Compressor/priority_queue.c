@@ -19,16 +19,16 @@ enum {
 PQueue_Ptr pqueue_init(Compare_Function compare_function) {
     PQueue_Ptr new_queue = (PQueue_Ptr)malloc(sizeof(PQueue));
     new_queue->items = (void**)malloc(PQStartingSize * sizeof(void*));
-    new_queue->_capacity = PQStartingSize;
+    new_queue->capacity = PQStartingSize;
     new_queue->count = 0;
     new_queue->a_less_b = compare_function;
     return new_queue;
 }
 
 void pqueue_enqueue(PQueue_Ptr queue, void *item) {
-    if (queue->count >= queue->_capacity) {
-        queue->_capacity = queue->_capacity * 2;
-        queue->items = realloc(queue->items, queue->_capacity);
+    if (queue->count >= queue->capacity) {
+        queue->capacity = queue->capacity * 2;
+        queue->items = realloc(queue->items, queue->capacity);
     }
     queue->items[queue->count] = item;
     queue->count++;
