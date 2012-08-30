@@ -2,9 +2,7 @@ Compressor
 ==========
 
 Compressor is a simple Huffman coding implementation in C.
-It's work in progress, so please
-USE AT YOUR OWN RISK. I AM NOT RESPONSIBLE FOR ANY LOST DATA.
-=============================================================
+It's work in progress, so please USE IT AT YOUR OWN RISK. I AM NOT RESPONSIBLE FOR ANY LOST DATA.
 
 How to build it
 ---------------
