@@ -73,6 +73,16 @@ void countdict_print(CountDict_Ptr dict) {
     free(keys);
 }
 
+void countdict_save_to_file(CountDict_Ptr dict, FILE *fp) {
+    fwrite(dict, 1, sizeof(CountDict), fp);
+}
+
+CountDict_Ptr countdict_load_from_file(FILE *fp) {
+    CountDict_Ptr loaded_dict = (CountDict_Ptr)malloc(sizeof(CountDict));
+    fread(loaded_dict, 1, sizeof(CountDict), fp);
+    return loaded_dict;
+}
+
 void countdict_dealloc(CountDict_Ptr dict) {
     free(dict);
 }

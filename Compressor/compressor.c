@@ -63,10 +63,10 @@ void compressor_test() {
         printf("Fail :(");
         return;
     }
-    print_file_bitpattern(destination_filename);
+    //print_file_bitpattern(destination_filename);
 }
 
-CountDict_Ptr count_byte_occurences_in_file(FILE *fp) {
+static CountDict_Ptr count_byte_occurences_in_file(FILE *fp) {
     CountDict_Ptr cdict = countdict_init();
     int c;
     c = EOF;
@@ -90,6 +90,7 @@ enum CompressorResult compressor_compress(const char *source_filename,
     Tree_Ptr tree;
     CodeDict_Value codedict_value;
     int c;
+    
     source_fp = fopen(source_filename, "rb");
     destination_fp = fopen(destination_filename, "wb");
     if (source_fp == NULL || destination_fp == NULL) {
@@ -102,21 +103,33 @@ enum CompressorResult compressor_compress(const char *source_filename,
     codedict = tree_get_codedict(tree);
     fclose(source_fp);
     source_fp = fopen(source_filename, "rb");
+    countdict_save_to_file(countdict, destination_fp);
+    printf("POS: %lu\n", ftell(destination_fp));
     while ((c = fgetc(source_fp)) != EOF) {
         codedict_value = codedict_get(codedict, c);
-        //bits_print(codedict_value.code, codedict_value.length);
         bs_put_bits(destination_stream, codedict_value.code, codedict_value.length);
     }
     codedict_value = codedict_get(codedict, CPSEndOfBlock);
     bs_put_bits(destination_stream, codedict_value.code, codedict_value.length);
+    
     bs_close_stream(destination_stream);
     fclose(source_fp);
     fclose(destination_fp);
+    
     countdict_print(countdict);
     codedict_print(codedict, 0);
+    
     tree_dealloc(tree);
     countdict_dealloc(countdict);
     codedict_dealloc(codedict);
+    return CPSRSuccess;
+    
+error:
+    return CPSRFail;
+}
+
+enum CompressorResult compressor_decompress(const char *source_filename,
+                                            const char *destination_filename) {
     return CPSRSuccess;
     
 error:

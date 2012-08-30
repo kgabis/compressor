@@ -24,6 +24,7 @@ enum CompressorResult {
 void compressor_test();
 enum CompressorResult compressor_compress(const char *source_filename,
                                           const char *destination_filename);
-CountDict_Ptr count_byte_occurences_in_file(FILE *fp);
+enum CompressorResult compressor_decompress(const char *source_filename,
+                                            const char *destination_filename)
 
 #endif
