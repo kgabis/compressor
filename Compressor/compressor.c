@@ -15,7 +15,7 @@
 #include "count_dictionary.h"
 #include "bit_operations.h"
 
-
+//TODO: Encoding data in blocks
 enum CompressionType {
     CPSTHuffman = 0
 };

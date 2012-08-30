@@ -18,19 +18,23 @@ enum ErrorType {
     ETWrongOption
 };
 
+enum OperationType {
+    OTNone = 0,
+    OTCompress = 1,
+    OTDecompress = 2
+};
+
 static void print_help() {
     printf("Usage:\n");
     printf("Compressing:   compressor -c INPUT_FILE [-o OUTPUT_FILE]\n");
     printf("Decompressing: compressor -d INPUT_FILE [-o OUTPUT_FILE]\n");
 }
 
-static char * remove_extension(char *string_with_extension) {
-    char *string_without_extension;
+static char * remove_extension(char *string_without_extension, const char *string_with_extension) {
     char *last_dot;
     if (string_with_extension == NULL) {
         return NULL;
     }
-    string_without_extension = (char*)malloc(strlen(string_with_extension) + 1);
     strcpy(string_without_extension, string_with_extension);
     last_dot = strrchr (string_without_extension, '.');
     if (last_dot != NULL) {
@@ -46,12 +50,10 @@ int main(int argc, const char * argv[])
         return 1;
     }
     argv++;
-    Compressor_Operation operation;
     enum CompressorResult operation_result;
-    const char *input_filename = NULL;
-    const char *output_filename = NULL;
-    char operation_string[256];
-    int arguments_ok = 0;
+    enum OperationType operation_type = OTNone;
+    char *input_filename = (char*)calloc(256, sizeof(char));
+    char *output_filename = (char*)calloc(256, sizeof(char));
     enum ErrorType error_type = ETNoError;
     
     while ((argc > 1) && (argv[0][0] == '-'))
@@ -59,39 +61,39 @@ int main(int argc, const char * argv[])
 		switch (argv[0][1])
 		{
 			case 'c':
-                strcpy(operation_string, "Compressing");
                 printf("Compress: %s\n", argv[1]);
-                operation = compressor_compress;
-                input_filename = argv[1];
-                argv++;
                 argc--;
-                if (arguments_ok || argc == 1) {
+                if (operation_type != OTNone || argc == 1) {
                     error_type = ETWrongNumberOfArguments;
                     goto error;
                 } else {
-                    arguments_ok = 1;
+                    operation_type = OTCompress;
                 }
+                strcpy(input_filename, argv[1]);
+                argv++;
 				break;
 			case 'd':
-                strcpy(operation_string, "Decompressing");
 				printf("Decompress: %s\n", argv[1]);
-                operation = compressor_decompress;
-                input_filename = argv[1];
-                argv++;
                 argc--;
-                if (arguments_ok || argc == 1) {
+                if (operation_type != OTNone || argc == 1) {
                     error_type = ETWrongNumberOfArguments;
                     goto error;
                 } else {
-                    arguments_ok = 1;
+                    operation_type = OTDecompress;
                 }
-				break;                
+                strcpy(input_filename, argv[1]);
+                argv++;
+				break;
             case 'o':
                 printf("Output: %s\n", argv[1]);
-                output_filename = argv[1];
-                argv++;
                 argc--;
-				break;
+                if (argc == 1) {
+                    error_type = ETWrongNumberOfArguments;
+                    goto error;
+                }
+                strcpy(output_filename, argv[1]);
+                argv++;
+                break;
 			default:
                 error_type = ETWrongOption;
 		}
@@ -99,19 +101,29 @@ int main(int argc, const char * argv[])
 		argc--;
 	}
     
-    if (arguments_ok) {
-        operation_result = operation(input_filename, output_filename);
-    } else {
-        error_type = ETWrongNumberOfArguments;
-        goto error;
+    switch (operation_type) {
+        case OTCompress:
+            if (output_filename[0] == '\0') {
+                sprintf(output_filename, "%s.%s", input_filename, CPS_FILE_EXTENSION);
+            }
+            operation_result = compressor_compress(input_filename, output_filename);
+            break;
+        case OTDecompress:
+            if (output_filename[0] == '\0') {
+                remove_extension(output_filename, input_filename);
+            }
+            operation_result = compressor_decompress(input_filename, output_filename);
+            break;
+        default:
+            break;
     }
     
     switch (operation_result) {
         case CPSRSuccess:
-            printf("%s %s successfull.\n", operation_string, input_filename);
+            printf("Operation successful.\n");
             break;
         case CPSRFail:
-            printf("%s %s failed.\n", operation_string, input_filename);
+            printf("Operation failed.\n");
             error_type = ETOperationFailed;
             goto error;
             break;

@@ -22,8 +22,6 @@ enum CompressorResult {
     CPSRFail = 0
 };
 
-typedef enum CompressorResult (*Compressor_Operation)(const char*, const char *);
-
 void compressor_test();
 enum CompressorResult compressor_compress(const char *source_filename,
                                           const char *destination_filename);
