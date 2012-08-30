@@ -57,7 +57,7 @@ int bs_get_bit(Bit_Stream_Ptr stream) {
     }
     int output = BIT_GET(stream->buffer, 7 - stream->bit_offset);
     stream->bit_offset++;
-    return output;
+    return !!output;
 }
 
 int bs_get_bits(Bit_Stream_Ptr stream, unsigned int length) {

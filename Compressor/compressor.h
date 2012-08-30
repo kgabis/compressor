@@ -25,6 +25,6 @@ void compressor_test();
 enum CompressorResult compressor_compress(const char *source_filename,
                                           const char *destination_filename);
 enum CompressorResult compressor_decompress(const char *source_filename,
-                                            const char *destination_filename)
+                                            const char *destination_filename);
 
 #endif

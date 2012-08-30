@@ -14,8 +14,6 @@
 #include "priority_queue.h"
 #include "bit_operations.h"
 
-#define MY_DEBUG 0
-
 static int compare_nodes(const void *a, const void *b) {
     Tree_Ptr tna = (Tree_Ptr)a;
     Tree_Ptr tnb = (Tree_Ptr)b;
@@ -34,22 +32,6 @@ Tree_Ptr tree_branch_init() {
 
 Tree_Ptr tree_branch_init_with_children(Tree_Ptr left, Tree_Ptr right) {
     Tree_Ptr new_node = tree_branch_init();
-    
-#if MY_DEBUG
-    printf("Creating branch with:\n");
-    printf("\t");
-    if (left->type == TNTBranch) {
-        printf("branch with count: %lu\n", left->count);
-    } else {
-        printf("leaf %c with count: %lu\n", left->value.leaf_value, left->count);
-    }
-    printf("\t");
-    if (right->type == TNTBranch) {
-        printf("branch with count: %lu\n", right->count);
-    } else {
-        printf("leaf %c with count: %lu\n", right->value.leaf_value, right->count);
-    }
-#endif
     new_node->value.children[0] = left;
     new_node->value.children[1] = right;
     new_node->count = left->count + right->count;
@@ -127,10 +109,15 @@ CodeDict_Ptr tree_get_codedict(Tree_Ptr tree) {
 }
 
 int tree_walk(Tree_Ptr tree, Bit_Stream_Ptr stream) {
+    if (tree == NULL) {
+        return 0;
+    }
     if (tree->type == TNTLeaf) {
         return tree->value.leaf_value;
     }
-    return tree_walk(tree->value.children[bs_get_bit(stream)], stream);
+    int bit = bs_get_bit(stream);
+    //printf("%d\n", bit);
+    return tree_walk(tree->value.children[bit], stream);
 }
 
 void tree_print(Tree_Ptr tree) {
