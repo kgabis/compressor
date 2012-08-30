@@ -25,4 +25,4 @@ compressor -d source_file [-o destination_file]
 License
 -------
 
-WTFPL - Do What The Fuck You Want To Public License
+[WTFPL - Do What The Fuck You Want To Public License](http://sam.zoy.org/wtfpl/)
