@@ -104,9 +104,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EE09A74B15E5720E005A321B /* Compressor */ = {
+		EE09A74B15E5720E005A321B /* compressor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EE09A75615E5720E005A321B /* Build configuration list for PBXNativeTarget "Compressor" */;
+			buildConfigurationList = EE09A75615E5720E005A321B /* Build configuration list for PBXNativeTarget "compressor" */;
 			buildPhases = (
 				EE09A74815E5720E005A321B /* Sources */,
 				EE09A74915E5720E005A321B /* Frameworks */,
@@ -116,7 +116,7 @@
 			);
 			dependencies = (
 			);
-			name = Compressor;
+			name = compressor;
 			productName = Compressor;
 			productReference = EE09A74C15E5720E005A321B /* Compressor */;
 			productType = "com.apple.product-type.tool";
@@ -142,7 +142,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EE09A74B15E5720E005A321B /* Compressor */,
+				EE09A74B15E5720E005A321B /* compressor */,
 			);
 		};
 /* End PBXProject section */
@@ -239,7 +239,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EE09A75615E5720E005A321B /* Build configuration list for PBXNativeTarget "Compressor" */ = {
+		EE09A75615E5720E005A321B /* Build configuration list for PBXNativeTarget "compressor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EE09A75715E5720E005A321B /* Debug */,

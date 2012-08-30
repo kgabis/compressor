@@ -33,6 +33,7 @@ unsigned long countdict_get(CountDict_Ptr dict, int key);
 int * countdict_get_keys(CountDict_Ptr dict);
 void countdict_save_to_file(CountDict_Ptr dict, FILE *fp);
 CountDict_Ptr countdict_load_from_file(FILE *fp);
+CountDict_Ptr countdict_count_in_file(FILE *fp);
 void countdict_dealloc(CountDict_Ptr dict);
 void countdict_print(CountDict_Ptr dict);
 

@@ -10,6 +10,7 @@
 #define Compressor_compressor_h
 
 #include "count_dictionary.h"
+#define CPS_FILE_EXTENSION "cps"
 
 enum {
     CPSMaxLeafVal = 300,
@@ -20,6 +21,8 @@ enum CompressorResult {
     CPSRSuccess = 1,
     CPSRFail = 0
 };
+
+typedef enum CompressorResult (*Compressor_Operation)(const char*, const char *);
 
 void compressor_test();
 enum CompressorResult compressor_compress(const char *source_filename,

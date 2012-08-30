@@ -83,6 +83,19 @@ CountDict_Ptr countdict_load_from_file(FILE *fp) {
     return loaded_dict;
 }
 
+CountDict_Ptr countdict_count_in_file(FILE *fp) {
+    CountDict_Ptr cdict = countdict_init();
+    int c;
+    c = EOF;
+    while((c = getc(fp)) != EOF) {
+        countdict_increment_count(cdict, (unsigned char)c);
+    }
+    ungetc(c, fp);
+    countdict_increment_count(cdict, CPSEndOfBlock);
+    fclose(fp);
+    return cdict;
+}
+
 void countdict_dealloc(CountDict_Ptr dict) {
     free(dict);
 }

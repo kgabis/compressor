@@ -15,7 +15,6 @@
 #include "count_dictionary.h"
 #include "bit_operations.h"
 
-#define CPS_FILE_EXTENSION "cps"
 
 enum CompressionType {
     CPSTHuffman = 0
@@ -76,18 +75,7 @@ void compressor_test() {
     //print_file_bitpattern(compressed_filename, sizeof(CountDict));
 }
 
-static CountDict_Ptr count_byte_occurences_in_file(FILE *fp) {
-    CountDict_Ptr cdict = countdict_init();
-    int c;
-    c = EOF;
-    while((c = getc(fp)) != EOF) {
-        countdict_increment_count(cdict, (unsigned char)c);
-    }
-    ungetc(c, fp);
-    countdict_increment_count(cdict, CPSEndOfBlock);
-    fclose(fp);
-    return cdict;
-}
+
 
 enum CompressorResult compressor_compress(const char *source_filename,
                                           const char *destination_filename) {
@@ -103,11 +91,10 @@ enum CompressorResult compressor_compress(const char *source_filename,
     source_fp = fopen(source_filename, "rb");
     destination_fp = fopen(destination_filename, "wb");
     if (source_fp == NULL || destination_fp == NULL) {
-        puts("Error: Wrong filename.");
         goto error;
     }
     destination_stream = bs_open_stream(destination_fp, BSTWrite);
-    countdict = count_byte_occurences_in_file(source_fp);
+    countdict = countdict_count_in_file(source_fp);
     tree = tree_grow_from_countdict(countdict);
     codedict = tree_get_codedict(tree);
     fclose(source_fp);
@@ -144,7 +131,6 @@ enum CompressorResult compressor_decompress(const char *source_filename,
     source_fp = fopen(source_filename, "rb");
     destination_fp = fopen(destination_filename, "wb");
     if (source_fp == NULL || destination_fp == NULL) {
-        puts("Error: Wrong filename.");
         goto error;
     }
     countdict = countdict_load_from_file(source_fp);
