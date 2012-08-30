@@ -14,7 +14,8 @@
 
 CountDict_Ptr countdict_init() {
     CountDict_Ptr new_dict = (CountDict_Ptr)malloc(sizeof(CountDict));
-    for (int i = 0; i < CPSMaxLeafVal; i++) {
+    int i;
+    for (i = 0; i < CPSMaxLeafVal; i++) {
         new_dict->items[i].is_set = 0;
         new_dict->items[i].key = i;
         new_dict->items[i].value = 0;

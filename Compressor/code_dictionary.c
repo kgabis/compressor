@@ -13,7 +13,8 @@
 
 CodeDict_Ptr codedict_init() {
     CodeDict_Ptr new_dict = (CodeDict_Ptr)malloc(sizeof(CodeDict));
-    for (int i = 0; i < CPSMaxLeafVal; i++) {
+    int i;
+    for (i = 0; i < CPSMaxLeafVal; i++) {
         new_dict->items[i].set = 0;
     }
     return new_dict;
