@@ -89,9 +89,12 @@ enum CompressorResult compressor_compress(const char *source_filename,
     int c;
     
     source_fp = fopen(source_filename, "rb");
+    if (source_fp == NULL) {
+        return CPSRFail;
+    }
     destination_fp = fopen(destination_filename, "wb");
-    if (source_fp == NULL || destination_fp == NULL) {
-        goto error;
+    if (destination_fp == NULL) {
+        return CPSRFail;
     }
     destination_stream = bs_open_stream(destination_fp, BSTWrite);
     countdict = countdict_count_in_file(source_fp);
@@ -115,9 +118,6 @@ enum CompressorResult compressor_compress(const char *source_filename,
     countdict_dealloc(countdict);
     codedict_dealloc(codedict);
     return CPSRSuccess;
-    
-error:
-    return CPSRFail;
 }
 
 enum CompressorResult compressor_decompress(const char *source_filename,
@@ -129,11 +129,17 @@ enum CompressorResult compressor_decompress(const char *source_filename,
     Tree_Ptr tree;
     int c;
     source_fp = fopen(source_filename, "rb");
+    if (source_fp == NULL) {
+        return CPSRFail;
+    }
     destination_fp = fopen(destination_filename, "wb");
-    if (source_fp == NULL || destination_fp == NULL) {
-        goto error;
+    if (destination_fp == NULL) {
+        return CPSRFail;
     }
     countdict = countdict_load_from_file(source_fp);
+    if (countdict == NULL) {
+        return CPSRFail;
+    }
     source_stream = bs_open_stream(source_fp, BSTRead);
     tree = tree_grow_from_countdict(countdict);
     while ((c = tree_walk(tree, source_stream)) != CPSEndOfBlock) {
@@ -147,7 +153,4 @@ enum CompressorResult compressor_decompress(const char *source_filename,
     tree_dealloc(tree);
     countdict_dealloc(countdict);           
     return CPSRSuccess;
-    
-error:
-    return CPSRFail;
 }

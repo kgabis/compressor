@@ -21,6 +21,7 @@ struct countdict_t {
     CountDict_KVPair items[300];
     unsigned int count;
     unsigned int capacity;
+    unsigned int checksum;
 };
 
 typedef struct countdict_t CountDict;

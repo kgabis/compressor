@@ -15,7 +15,8 @@ enum ErrorType {
     ETNoError = 0,
     ETWrongNumberOfArguments = 1,
     ETOperationFailed = 2,
-    ETWrongOption
+    ETIdenticalFilenames = 3,
+    ETWrongOption = 4
 };
 
 enum OperationType {
@@ -85,7 +86,6 @@ int main(int argc, const char * argv[])
                 argv++;
 				break;
             case 'o':
-                printf("Output: %s\n", argv[1]);
                 argc--;
                 if (argc == 1) {
                     error_type = ETWrongNumberOfArguments;
@@ -106,11 +106,19 @@ int main(int argc, const char * argv[])
             if (output_filename[0] == '\0') {
                 sprintf(output_filename, "%s.%s", input_filename, CPS_FILE_EXTENSION);
             }
+            if (strcmp(input_filename, output_filename) == 0) {
+                error_type = ETIdenticalFilenames;
+                goto error;
+            }
             operation_result = compressor_compress(input_filename, output_filename);
             break;
         case OTDecompress:
             if (output_filename[0] == '\0') {
                 remove_extension(output_filename, input_filename);
+            }
+            if (strcmp(input_filename, output_filename) == 0) {
+                error_type = ETIdenticalFilenames;
+                goto error;
             }
             operation_result = compressor_decompress(input_filename, output_filename);
             break;
@@ -121,6 +129,7 @@ int main(int argc, const char * argv[])
     switch (operation_result) {
         case CPSRSuccess:
             printf("Operation successful.\n");
+            printf("Output: %s\n", output_filename);
             break;
         case CPSRFail:
             printf("Operation failed.\n");
@@ -129,7 +138,9 @@ int main(int argc, const char * argv[])
             break;
         default:
             break;
-    }    
+    }
+    free(input_filename);
+    free(output_filename);
     return 0;
 error:
     switch (error_type) {
@@ -138,6 +149,9 @@ error:
             break;
         case ETWrongOption:
             printf("Wrong option: %s\n", argv[1]);
+            break;
+        case ETIdenticalFilenames:
+            printf("Identical filenames.\n");
             break;
         case ETOperationFailed:
             break;
