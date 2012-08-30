@@ -22,7 +22,8 @@ enum CompressorResult {
 };
 
 void compressor_test();
-enum CompressorResult compressor_compress(const char *filename);
+enum CompressorResult compressor_compress(const char *source_filename,
+                                          const char *destination_filename);
 CountDict_Ptr count_byte_occurences_in_file(FILE *fp);
 
 #endif

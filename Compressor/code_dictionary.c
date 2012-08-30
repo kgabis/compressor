@@ -35,8 +35,7 @@ void codedict_dealloc(CodeDict_Ptr dict) {
 
 void codedict_print(CodeDict_Ptr dict, char print_chars) {
     int i;
-    int bit_count = 0;
-    
+
     for (i = 0; i < CPSMaxLeafVal; i++) {
         if (dict->items[i].set) {
             if (print_chars) {
@@ -44,10 +43,8 @@ void codedict_print(CodeDict_Ptr dict, char print_chars) {
             } else {
                 printf("Key = %3u, code = ", i);
             }
-            bit_count += dict->items[i].length;
             bits_print(dict->items[i].code, dict->items[i].length);
             printf("\n");
         }
     }
-    printf("Average bits per byte: %f\n", (float)bit_count/256.0f);
 }

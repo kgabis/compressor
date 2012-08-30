@@ -30,7 +30,7 @@ int main(int argc, const char * argv[])
 {
     compressor_test();
 //    bs_test();
-    printf("Done!\n");
+    printf("\nDone!\n");
     return 0;
 }
 

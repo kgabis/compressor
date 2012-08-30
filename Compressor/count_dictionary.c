@@ -30,7 +30,7 @@ CountDict_Ptr countdict_init() {
 }
 
 void countdict_add(CountDict_Ptr dict, int key, unsigned long value) {
-    int truncated_key = key%dict->_capacity;
+    int truncated_key = key % dict->_capacity;
     if (dict->items[truncated_key].is_set == 0) {
         dict->count++;
     }
@@ -39,7 +39,7 @@ void countdict_add(CountDict_Ptr dict, int key, unsigned long value) {
 }
 
 void countdict_increment_count(CountDict_Ptr dict, int key) {
-    int truncated_key = key%dict->_capacity;
+    int truncated_key = key % dict->_capacity;
     if (dict->items[truncated_key].is_set == 0) {
         dict->count++;
     }
@@ -61,13 +61,12 @@ int * countdict_get_keys(CountDict_Ptr dict) {
 }
 
 unsigned long countdict_get(CountDict_Ptr dict, int key) {
-    int i;
-    for (i = 0; i < dict->count; i++) {
-        if (dict->items[i].key == key) {
-            return dict->items[i].value;
-        }
+    int truncated_key = key % dict->_capacity;
+    if (dict->items[truncated_key].is_set) {
+        return dict->items[truncated_key].value;
+    } else {
+        return 0;
     }
-    return 0;
 }
 
 void countdict_print(CountDict_Ptr dict) {
