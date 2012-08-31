@@ -37,6 +37,5 @@ void bs_put_bit(Bit_Stream_Ptr stream, int value);
 int bs_get_bit(Bit_Stream_Ptr stream);
 
 void bs_close_stream(Bit_Stream_Ptr stream);
-void bs_test();
 
 #endif

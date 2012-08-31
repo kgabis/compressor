@@ -12,27 +12,6 @@
 #include "bit_operations.h"
 #include "compressor.h"
 
-void bs_test() {
-    const char filename[] = "/users/kgabis/code/objc/mine/Compressor/bs_test.txt";
-    FILE *fp = fopen(filename, "wb");
-    if (fp == NULL){
-       puts("Error: Wrong filename.");
-    }
-    Bit_Stream_Ptr bit_stream = bs_open_stream(fp, BSTWrite);
-    bs_put_bits(bit_stream, 0x4, 4);
-    bs_put_bits(bit_stream, 0x1, 2);
-    bs_close_stream(bit_stream);
-    fclose(fp);
-    fp = fopen(filename, "rb");
-    bit_stream = bs_open_stream(fp, BSTRead);
-    int c;
-    while ((c = bs_get_bits(bit_stream, 2)) != EOF) {
-        bits_print(c, 2);
-        printf("\n");
-    }    
-    fclose(fp);
-}
-
 Bit_Stream_Ptr bs_open_stream(FILE *file, enum BitStreamType type) {
     Bit_Stream_Ptr new_stream = (Bit_Stream_Ptr)malloc(sizeof(Bit_Stream));
     new_stream->fp = file;

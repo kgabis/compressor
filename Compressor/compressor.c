@@ -28,55 +28,6 @@ struct compressed_block_t {
 
 typedef struct compressed_block_t Compressed_Block;
 
-static void print_file_bitpattern(const char *filename, size_t offset) {
-    FILE *fp = fopen(filename, "rb");
-    fseek(fp, offset, SEEK_SET);
-    Bit_Stream_Ptr stream = bs_open_stream(fp, BSTRead);
-    int c;
-    int i = 1;
-    while ((c = bs_get_bit(stream)) != EOF) {
-        if (i%9 == 0) {
-            printf("\n");
-            i = 1;
-        }
-        if (c) {
-            printf("1");
-        } else {
-            printf("0");
-        }        
-        i++;
-
-    }
-    bs_close_stream(stream);
-    fclose(fp);
-}
-
-void compressor_test() {
-    char source_filename[] = "/users/kgabis/code/objc/mine/Compressor/test_long.txt";
-    char *compressed_filename;
-    char decompressed_filename[] = "/users/kgabis/code/objc/mine/Compressor/test_d.txt";
-    compressed_filename = (char*)calloc(strlen(source_filename) + strlen(CPS_FILE_EXTENSION) + 2, 1);
-    sprintf(compressed_filename, "%s.%s", source_filename, CPS_FILE_EXTENSION);
-    enum CompressorResult result;
-    result = compressor_compress(source_filename, compressed_filename);
-    if (result == CPSRSuccess) {
-        printf("Compression success!\n");
-    } else {
-        printf("Compression fail :(");
-        return;
-    }
-    result = compressor_decompress(compressed_filename, decompressed_filename);
-    if (result == CPSRSuccess) {
-        printf("Decompression success!\n");
-    } else {
-        printf("Decompression fail :(");
-        return;
-    }
-    //print_file_bitpattern(compressed_filename, sizeof(CountDict));
-}
-
-
-
 enum CompressorResult compressor_compress(const char *source_filename,
                                           const char *destination_filename) {
     FILE *source_fp;

@@ -7,7 +7,32 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
+#include "bit_stream.h"
 #include "bit_operations.h"
+
+void print_file_bitpattern(const char *filename, size_t offset) {
+    FILE *fp = fopen(filename, "rb");
+    fseek(fp, offset, SEEK_SET);
+    Bit_Stream_Ptr stream = bs_open_stream(fp, BSTRead);
+    int c;
+    int i = 1;
+    while ((c = bs_get_bit(stream)) != EOF) {
+        if (i%9 == 0) {
+            printf("\n");
+            i = 1;
+        }
+        if (c) {
+            printf("1");
+        } else {
+            printf("0");
+        }
+        i++;
+        
+    }
+    bs_close_stream(stream);
+    fclose(fp);
+}
 
 void bits_print_uint(unsigned int num) {
     int i;
