@@ -17,7 +17,6 @@ CountDict_Ptr countdict_init() {
     int i;
     for (i = 0; i < CPSMaxLeafVal; i++) {
         new_dict->items[i].is_set = 0;
-        new_dict->items[i].key = i;
         new_dict->items[i].value = 0;
     }
     new_dict->capacity = CPSMaxLeafVal;
@@ -49,7 +48,7 @@ int * countdict_get_keys(CountDict_Ptr dict) {
     int *result = (int*)malloc(sizeof(int) * dict->count);
     for (i = 0 ; i < dict->capacity; i++) {
         if (dict->items[i].is_set) {
-            result[result_index] = dict->items[i].key;
+            result[result_index] = i;
             result_index++;
         }
     }

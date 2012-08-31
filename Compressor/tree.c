@@ -57,10 +57,6 @@ void tree_dealloc(Tree_Ptr tree) {
     }
 }
 
-static Tree_Ptr get_node_from_dict_entry(CountDict_KVPair dict_entry) {
-    return tree_leaf_init(dict_entry.key, dict_entry.value);
-}
-
 Tree_Ptr tree_grow_from_countdict(CountDict_Ptr count_dictionary) {
     PQueue_Ptr pqueue = pqueue_init(compare_nodes);
     Tree_Ptr new_node;

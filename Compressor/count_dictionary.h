@@ -11,8 +11,7 @@
 
 struct count_dict_kvpair_t {
     unsigned char is_set;
-    int key;
-    unsigned long value;
+    unsigned long long value;
 };
 
 typedef struct count_dict_kvpair_t CountDict_KVPair;
