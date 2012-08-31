@@ -1,8 +1,7 @@
 Compressor
 ==========
 
-Compressor is a simple Huffman coding implementation in C.
-It's work in progress, so please USE IT AT YOUR OWN RISK. I AM NOT RESPONSIBLE FOR ANY LOST DATA.
+Compressor is an implementation of Huffman coding lossless data compression in C. It's work in progress, so please USE IT AT YOUR OWN RISK. I AM NOT RESPONSIBLE FOR ANY LOST DATA.
 
 How to build it
 ---------------
@@ -13,12 +12,12 @@ How to use it
 -------------
 
 To compress:
-```bash 
+```
 compressor -c source_file [-o destination_file]
 ```
 
 To decompress:
-```bash 
+``` 
 compressor -d source_file [-o destination_file]
 ```
 
