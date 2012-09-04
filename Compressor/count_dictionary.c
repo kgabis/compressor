@@ -92,6 +92,7 @@ CountDict_Ptr countdict_load_from_file(FILE *fp) {
     CountDict_Ptr loaded_dict = (CountDict_Ptr)malloc(sizeof(CountDict));
     fseek(fp, 0L, SEEK_END);
     if(ftell(fp) < sizeof(CountDict)) {
+        free(loaded_dict);
         return NULL;
     }
     fseek(fp, 0L, SEEK_SET);
@@ -107,13 +108,10 @@ CountDict_Ptr countdict_load_from_file(FILE *fp) {
 CountDict_Ptr countdict_count_in_file(FILE *fp) {
     CountDict_Ptr cdict = countdict_init();
     int c;
-    c = EOF;
     while((c = getc(fp)) != EOF) {
         countdict_increment_count(cdict, (unsigned char)c);
     }
-    ungetc(c, fp);
     countdict_increment_count(cdict, CPSEndOfBlock);
-    fclose(fp);
     return cdict;
 }
 

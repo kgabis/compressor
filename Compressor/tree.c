@@ -105,15 +105,10 @@ CodeDict_Ptr tree_get_codedict(Tree_Ptr tree) {
 }
 
 int tree_walk(Tree_Ptr tree, Bit_Stream_Ptr stream) {
-    if (tree == NULL) {
-        return 0;
+    while (tree->type != TNTLeaf) {
+        tree = tree->value.children[bs_get_bit(stream)];
     }
-    if (tree->type == TNTLeaf) {
-        return tree->value.leaf_value;
-    }
-    int bit = bs_get_bit(stream);
-    //printf("%d\n", bit);
-    return tree_walk(tree->value.children[bit], stream);
+    return tree->value.leaf_value;
 }
 
 void tree_print(Tree_Ptr tree) {

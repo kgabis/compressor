@@ -11,6 +11,8 @@
 #include <string.h>
 #include "compressor.h"
 
+#define FREE_NOT_NULL(A) if ((A) != NULL) { free(A); }
+
 enum ErrorType {
     ETNoError = 0,
     ETWrongNumberOfArguments = 1,
@@ -96,6 +98,7 @@ int main(int argc, const char * argv[])
                 break;
 			default:
                 error_type = ETWrongOption;
+                goto error;
 		}
 		argv++;
 		argc--;
@@ -139,8 +142,8 @@ int main(int argc, const char * argv[])
         default:
             break;
     }
-    free(input_filename);
-    free(output_filename);
+    FREE_NOT_NULL(input_filename);
+    FREE_NOT_NULL(output_filename);
     return 0;
 error:
     switch (error_type) {
@@ -159,5 +162,7 @@ error:
             break;
     }
     print_help();
+    FREE_NOT_NULL(input_filename);
+    FREE_NOT_NULL(output_filename);
     return 1;
 }

@@ -12,7 +12,7 @@
 #define BIT_SET(a,b) ((a) |= (1<<(b)))
 #define BIT_CLEAR(a,b) ((a) &= ~(1<<(b)))
 #define BIT_FLIP(a,b) ((a) ^= (1<<(b)))
-#define BIT_GET(a,b) ((a) & (1<<(b)))
+#define BIT_GET(a,b) (((a) & (1<<(b))) >> b)
 
 void bits_print_file_bitpattern(const char *filename, size_t offset);
 void bits_print_uint(unsigned int num);

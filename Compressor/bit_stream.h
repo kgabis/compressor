@@ -23,7 +23,7 @@ enum BitStreamStatus {
 
 typedef struct bit_stream_t {
     FILE *fp;
-    unsigned char buffer;
+    unsigned int buffer;
     unsigned char bit_offset;
     enum BitStreamStatus status;
 } Bit_Stream;

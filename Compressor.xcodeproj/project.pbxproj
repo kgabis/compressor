@@ -32,7 +32,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		EE09A74C15E5720E005A321B /* Compressor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = Compressor; path = compressor; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE09A74C15E5720E005A321B /* compressor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = compressor; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE09A75015E5720E005A321B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		EE09A75215E5720E005A321B /* Compressor.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Compressor.1; sourceTree = "<group>"; };
 		EE0F3D1615E7B3EC0042FD25 /* priority_queue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = priority_queue.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
@@ -74,7 +74,7 @@
 		EE09A74D15E5720E005A321B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EE09A74C15E5720E005A321B /* Compressor */,
+				EE09A74C15E5720E005A321B /* compressor */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -120,7 +120,7 @@
 			);
 			name = compressor;
 			productName = Compressor;
-			productReference = EE09A74C15E5720E005A321B /* Compressor */;
+			productReference = EE09A74C15E5720E005A321B /* compressor */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -218,6 +218,7 @@
 		EE09A75715E5720E005A321B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -225,6 +226,7 @@
 		EE09A75815E5720E005A321B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

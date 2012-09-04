@@ -12,11 +12,13 @@
 #include "bit_operations.h"
 #include "compressor.h"
 
+#define BUFFER_SIZE sizeof(unsigned int) * 8
+
 Bit_Stream_Ptr bs_open_stream(FILE *file, enum BitStreamType type) {
     Bit_Stream_Ptr new_stream = (Bit_Stream_Ptr)malloc(sizeof(Bit_Stream));
     new_stream->fp = file;
     if (type == BSTRead) {
-        new_stream->bit_offset = 8;
+        new_stream->bit_offset = BUFFER_SIZE;
     } else {
         new_stream->bit_offset = 0;
     }
@@ -24,22 +26,20 @@ Bit_Stream_Ptr bs_open_stream(FILE *file, enum BitStreamType type) {
     return new_stream;
 }
 
-int bs_get_bit(Bit_Stream_Ptr stream) {
-    if (stream->bit_offset == 8) {
-        int c;
-        c = getc(stream->fp);
-        if (c == EOF) {
+int inline bs_get_bit(Bit_Stream_Ptr stream) {
+    if (stream->bit_offset == BUFFER_SIZE) {
+        if (feof(stream->fp)) {
             return EOF;
         }
-        stream->buffer = c;
+        fread(&stream->buffer, 1, sizeof(stream->buffer), stream->fp);
         stream->bit_offset = 0;
     }
-    int output = BIT_GET(stream->buffer, 7 - stream->bit_offset);
+    int output = BIT_GET(stream->buffer, BUFFER_SIZE - 1 - stream->bit_offset);
     stream->bit_offset++;
-    return !!output;
+    return output;
 }
 
-int bs_get_bits(Bit_Stream_Ptr stream, unsigned int length) {
+int inline bs_get_bits(Bit_Stream_Ptr stream, unsigned int length) {
     int output = 0;
     int i;
     int c;
@@ -56,25 +56,24 @@ int bs_get_bits(Bit_Stream_Ptr stream, unsigned int length) {
     return output;
 }
 
-void bs_put_bit(Bit_Stream_Ptr stream, int value) {
-    unsigned char val = !!value;
-    if (val) {
-        BIT_SET(stream->buffer, 7 - stream->bit_offset);
+void inline bs_put_bit(Bit_Stream_Ptr stream, int value) {
+    if (value) {
+        BIT_SET(stream->buffer, BUFFER_SIZE - 1 - stream->bit_offset);
     } else {
-        BIT_CLEAR(stream->buffer, 7 - stream->bit_offset);
+        BIT_CLEAR(stream->buffer, BUFFER_SIZE - 1 - stream->bit_offset);
     }
     stream->bit_offset++;
-    if (stream->bit_offset > 7) {
-        fputc(stream->buffer, stream->fp);
+    if (stream->bit_offset > BUFFER_SIZE - 1) {
+        fwrite(&stream->buffer, 1, sizeof(stream->buffer), stream->fp);
         stream->buffer = 0;
         stream->bit_offset = 0;
     }
 }
 
-void bs_put_bits(Bit_Stream_Ptr stream, unsigned int bits, unsigned int length) {
-    int i;
-    for (i = 0; i < length; i++) {
-        bs_put_bit(stream, BIT_GET(bits, length - i - 1));
+void inline bs_put_bits(Bit_Stream_Ptr stream, unsigned int bits, unsigned int length) {
+    while (length--) {
+        bs_put_bit(stream, BIT_GET(bits, length));
+
     }
 }
 
